@@ -26,6 +26,7 @@ def register_new_courier_and_return_login_password(wanted_length):
         login_pass.append(first_name)
     return login_pass
 
+@allure.step("Получение ID курьера")
 def get_courier_id(login, password):
     payload = {"login": login, "password": password}
     response = requests.post(f'{BASE_URL}/login', json=payload)
@@ -35,6 +36,7 @@ def get_courier_id(login, password):
         return text_response.get('id')
     return None
 
+@allure.step("Удаление курьера по ID")
 def delete_courier_by_id(courier_id):
     if courier_id:
         requests.delete(f'{BASE_URL}/{courier_id}')

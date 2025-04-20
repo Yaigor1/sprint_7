@@ -3,10 +3,12 @@ import requests
 import courier_api
 import helper
 import data
+import allure
 
 
 class TestCourierCreation:
 
+    @pytest.allure.title("Тест успешного создания курьера с правильным кодом и текстом")
     def test_courier_creation_with_all_data_success_with_correct_code_and_text(self):
         payload = {"login": helper.get_ten_random_string(data.needed_length),
                    "password": helper.get_ten_random_string(data.needed_length),
@@ -17,6 +19,7 @@ class TestCourierCreation:
         courier_api.created_courier_login_and_delete(payload)
         assert code_response == 201 and text_response == '{"ok":true}'
 
+    @pytest.allure.title("Тест невозможности создания двух одинаковых курьеров с одинаковым логином")
     def test_create_two_similar_courier_and_couriers_with_the_same_login_impossible(self):
         payload = {"login": helper.get_ten_random_string(data.needed_length),
                    "password": helper.get_ten_random_string(data.needed_length),
@@ -31,6 +34,7 @@ class TestCourierCreation:
             f' and text is {text_response}, but text have to be = "message": "Этот логин уже используется"'
         )
 
+    @pytest.allure.title("Тест невозможности создания курьера без обязательных полей")
     @pytest.mark.parametrize('empty_field', ["login", "password", "firstName"])
     def test_creation_courier_without_required_field_impossible(self, empty_field):
         payload = {"login": helper.get_ten_random_string(data.needed_length),
